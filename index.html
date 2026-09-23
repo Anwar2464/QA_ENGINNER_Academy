@@ -1,0 +1,2767 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1,viewport-fit=cover"
+    />
+    <meta
+      name="description"
+      content="QA Engineer Academy - plateforme complète pour apprendre le QA Engineering"
+    />
+    <title>QA Engineer Academy</title>
+    <style>
+      :root {
+        --bg: #08111f;
+        --bg2: #0d1728;
+        --panel: #111e31;
+        --panel2: #16243a;
+        --border: #263751;
+        --text: #e9f0fa;
+        --muted: #9aaac0;
+        --accent: #2dd4bf;
+        --accent2: #14b8a6;
+        --good: #34d399;
+        --bad: #fb7185;
+        --warn: #fbbf24;
+        --blue: #60a5fa;
+        --code: #07101c;
+        --shadow: 0 12px 35px rgba(0, 0, 0, 0.22);
+        font-family:
+          Inter,
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          "Segoe UI",
+          sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+      }
+      button,
+      input,
+      select,
+      textarea {
+        font: inherit;
+      }
+      button {
+        cursor: pointer;
+      }
+      a {
+        color: var(--accent);
+      }
+      code,
+      pre,
+      .mono {
+        font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      }
+      pre {
+        background: var(--code);
+        border: 1px solid var(--border);
+        padding: 14px;
+        border-radius: 10px;
+        overflow: auto;
+        line-height: 1.6;
+        font-size: 13px;
+      }
+      code {
+        color: #99f6e4;
+      }
+      h1,
+      h2,
+      h3 {
+        line-height: 1.2;
+      }
+      h1 {
+        font-size: clamp(25px, 4vw, 40px);
+        margin: 0 0 10px;
+      }
+      h2 {
+        font-size: 24px;
+      }
+      h3 {
+        font-size: 17px;
+      }
+      p {
+        line-height: 1.65;
+      }
+      .small {
+        font-size: 12px;
+        color: var(--muted);
+      }
+      .muted {
+        color: var(--muted);
+      }
+      .hidden {
+        display: none !important;
+      }
+      .layout {
+        display: flex;
+        min-height: 100vh;
+      }
+      .sidebar {
+        width: 280px;
+        flex: none;
+        background: var(--bg2);
+        border-right: 1px solid var(--border);
+        position: sticky;
+        top: 0;
+        height: 100vh;
+        overflow: auto;
+        padding: 18px 12px;
+        z-index: 50;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 6px 8px 18px;
+        border-bottom: 1px solid var(--border);
+        margin-bottom: 12px;
+      }
+      .logo {
+        width: 38px;
+        height: 38px;
+        border-radius: 11px;
+        background: linear-gradient(135deg, var(--accent), #99f6e4);
+        color: #04201c;
+        display: grid;
+        place-items: center;
+        font-weight: 900;
+      }
+      .brand b {
+        font-size: 14px;
+      }
+      .nav {
+        display: grid;
+        gap: 3px;
+      }
+      .nav button {
+        border: 1px solid transparent;
+        background: transparent;
+        color: var(--muted);
+        padding: 9px 10px;
+        border-radius: 9px;
+        text-align: left;
+        display: flex;
+        gap: 9px;
+        align-items: center;
+        font-size: 13px;
+      }
+      .nav button:hover {
+        background: var(--panel);
+        color: var(--text);
+      }
+      .nav button.active {
+        background: rgba(45, 212, 191, 0.13);
+        color: var(--accent);
+        border-color: rgba(45, 212, 191, 0.18);
+      }
+      .nav .lock {
+        opacity: 0.42;
+      }
+      .main {
+        flex: 1;
+        min-width: 0;
+      }
+      .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 40;
+        background: rgba(8, 17, 31, 0.94);
+        backdrop-filter: blur(10px);
+        border-bottom: 1px solid var(--border);
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .menu {
+        display: none;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        color: var(--text);
+        border-radius: 8px;
+        padding: 8px 10px;
+      }
+      .search {
+        position: relative;
+        flex: 1;
+        max-width: 560px;
+      }
+      .search input {
+        width: 100%;
+        background: var(--panel);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        padding: 10px 12px 10px 36px;
+        outline: none;
+      }
+      .search:before {
+        content: "⌕";
+        position: absolute;
+        left: 12px;
+        top: 8px;
+        color: var(--muted);
+        font-size: 17px;
+      }
+      .results {
+        position: absolute;
+        top: 110%;
+        left: 0;
+        right: 0;
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        box-shadow: var(--shadow);
+        max-height: 340px;
+        overflow: auto;
+        display: none;
+        z-index: 100;
+      }
+      .results button {
+        width: 100%;
+        border: 0;
+        border-bottom: 1px solid var(--border);
+        background: transparent;
+        color: var(--text);
+        text-align: left;
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+      .results button:hover {
+        background: rgba(45, 212, 191, 0.12);
+      }
+      .xp,
+      .theme {
+        border: 1px solid var(--border);
+        background: var(--panel);
+        color: var(--text);
+        border-radius: 9px;
+        padding: 8px 11px;
+        white-space: nowrap;
+        font-size: 12px;
+      }
+      .xp {
+        color: var(--accent);
+      }
+      .content {
+        max-width: 1100px;
+        margin: auto;
+        padding: 28px 24px 70px;
+      }
+      .section {
+        display: none;
+      }
+      .section.active {
+        display: block;
+      }
+      .hero {
+        background: linear-gradient(
+          135deg,
+          var(--panel),
+          rgba(45, 212, 191, 0.07)
+        );
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        box-shadow: var(--shadow);
+        margin-bottom: 18px;
+      }
+      .eyebrow {
+        color: var(--accent);
+        font-size: 12px;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        font-weight: 800;
+      }
+      .lede {
+        color: var(--muted);
+        max-width: 760px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 12px;
+      }
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 16px;
+      }
+      .card.click {
+        cursor: pointer;
+        transition: 0.15s;
+      }
+      .card.click:hover {
+        transform: translateY(-1px);
+        border-color: var(--accent);
+      }
+      .card h3 {
+        margin: 0 0 7px;
+      }
+      .tag {
+        display: inline-block;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 3px 7px;
+        font-size: 11px;
+        color: var(--muted);
+        margin: 3px 3px 0 0;
+      }
+      .tag.good {
+        color: var(--good);
+        border-color: rgba(52, 211, 153, 0.4);
+      }
+      .tag.warn {
+        color: var(--warn);
+        border-color: rgba(251, 191, 36, 0.4);
+      }
+      .tag.bad {
+        color: var(--bad);
+        border-color: rgba(251, 113, 133, 0.4);
+      }
+      .progress {
+        height: 10px;
+        background: var(--code);
+        border: 1px solid var(--border);
+        border-radius: 20px;
+        overflow: hidden;
+      }
+      .progress > i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, var(--accent2), var(--accent));
+        transition: 0.3s;
+      }
+      .btn {
+        border: 0;
+        border-radius: 9px;
+        background: var(--accent);
+        color: #03231f;
+        font-weight: 800;
+        padding: 9px 13px;
+        font-size: 13px;
+      }
+      .btn.secondary {
+        background: var(--panel2);
+        color: var(--text);
+        border: 1px solid var(--border);
+      }
+      .btn.danger {
+        background: rgba(251, 113, 133, 0.13);
+        color: var(--bad);
+        border: 1px solid rgba(251, 113, 133, 0.35);
+      }
+      .btn.small {
+        padding: 7px 10px;
+        font-size: 12px;
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 12px 0;
+      }
+      .lesson {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        padding: 18px;
+        margin: 13px 0;
+      }
+      .lesson .level {
+        color: var(--accent);
+        font-size: 10px;
+        font-weight: 800;
+        border: 1px solid rgba(45, 212, 191, 0.35);
+        padding: 3px 7px;
+        border-radius: 5px;
+        display: inline-block;
+        margin-bottom: 7px;
+      }
+      .callout {
+        border-left: 3px solid var(--accent);
+        background: rgba(45, 212, 191, 0.07);
+        padding: 11px 13px;
+        border-radius: 8px;
+        margin: 12px 0;
+      }
+      .callout.warn {
+        border-left-color: var(--warn);
+        background: rgba(251, 191, 36, 0.06);
+      }
+      .callout.bad {
+        border-left-color: var(--bad);
+        background: rgba(251, 113, 133, 0.06);
+      }
+      .diagram {
+        background: var(--code);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        padding: 16px;
+        text-align: center;
+        overflow: auto;
+        margin: 12px 0;
+      }
+      .diagram .node {
+        display: inline-block;
+        border: 1px solid var(--accent);
+        border-radius: 9px;
+        padding: 9px 12px;
+        margin: 4px;
+        background: rgba(45, 212, 191, 0.07);
+      }
+      .arrow {
+        color: var(--accent);
+        font-weight: 900;
+        padding: 0 4px;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0;
+        font-size: 13px;
+      }
+      th,
+      td {
+        border: 1px solid var(--border);
+        padding: 9px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        background: var(--bg2);
+      }
+      .tabs {
+        display: flex;
+        gap: 5px;
+        flex-wrap: wrap;
+        margin-bottom: 12px;
+      }
+      .tabs button {
+        background: var(--panel2);
+        color: var(--muted);
+        border: 1px solid var(--border);
+        padding: 8px 10px;
+        border-radius: 8px;
+      }
+      .tabs button.on {
+        color: var(--accent);
+        border-color: var(--accent);
+      }
+      .quizq {
+        border-bottom: 1px solid var(--border);
+        padding: 13px 0;
+      }
+      .quizq:last-child {
+        border-bottom: 0;
+      }
+      .option {
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: var(--bg2);
+        color: var(--text);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 9px;
+        margin: 6px 0;
+      }
+      .option:hover {
+        border-color: var(--accent);
+      }
+      .option.correct {
+        border-color: var(--good);
+        background: rgba(52, 211, 153, 0.12);
+      }
+      .option.wrong {
+        border-color: var(--bad);
+        background: rgba(251, 113, 133, 0.12);
+      }
+      .answer {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 6px;
+      }
+      .kbd {
+        font-family: monospace;
+        border: 1px solid var(--border);
+        background: var(--code);
+        padding: 2px 5px;
+        border-radius: 5px;
+      }
+      .toolbox {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+        gap: 9px;
+      }
+      .toolbox .tool {
+        padding: 13px;
+        background: var(--panel2);
+        border: 1px solid var(--border);
+        border-radius: 10px;
+      }
+      .letterbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 5px;
+        margin: 12px 0;
+      }
+      .letterbar button {
+        border: 1px solid var(--border);
+        background: var(--panel2);
+        color: var(--text);
+        border-radius: 6px;
+        padding: 5px 8px;
+      }
+      .searchbox {
+        width: 100%;
+        background: var(--bg2);
+        border: 1px solid var(--border);
+        color: var(--text);
+        padding: 10px;
+        border-radius: 9px;
+      }
+      .lab-app {
+        background: #fff;
+        color: #111;
+        border-radius: 12px;
+        padding: 18px;
+        border: 1px solid #ccd5e3;
+      }
+      .lab-app input {
+        display: block;
+        width: 100%;
+        padding: 9px;
+        margin: 7px 0;
+        border: 1px solid #aaa;
+        border-radius: 6px;
+        color: #111;
+      }
+      .lab-app button {
+        background: #0d9488;
+        color: #fff;
+        border: 0;
+        border-radius: 6px;
+        padding: 9px 12px;
+      }
+      .status {
+        padding: 9px;
+        border-radius: 7px;
+        margin-top: 8px;
+        background: #eef2f7;
+        color: #334155;
+      }
+      footer {
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+        padding: 20px;
+      }
+      @media (max-width: 850px) {
+        .sidebar {
+          position: fixed;
+          left: 0;
+          transform: translateX(-100%);
+          transition: 0.2s;
+          box-shadow: var(--shadow);
+        }
+        .sidebar.open {
+          transform: translateX(0);
+        }
+        .menu {
+          display: block;
+        }
+        .content {
+          padding: 20px 14px 60px;
+        }
+        .topbar {
+          padding: 10px 12px;
+        }
+        .theme {
+          font-size: 0;
+        }
+        .theme:first-letter {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="layout">
+      <aside class="sidebar" id="sidebar">
+        <div class="brand">
+          <div class="logo">QA</div>
+          <b>QA Engineer Academy</b>
+        </div>
+        <div class="nav" id="nav"></div>
+      </aside>
+
+      <div class="main">
+        <header class="topbar">
+          <button class="menu" id="menuBtn">☰</button>
+          <div class="search">
+            <input
+              id="globalSearch"
+              placeholder="Rechercher un module, terme, outil…"
+            />
+            <div class="results" id="results"></div>
+          </div>
+          <span class="xp" id="xp">0 XP</span>
+          <button class="theme" id="theme">☀️ Clair</button>
+        </header>
+
+        <main class="content" id="content"></main>
+        <footer>
+          QA Engineer Academy • plateforme pédagogique locale • progression
+          enregistrée dans ton navigateur
+        </footer>
+      </div>
+    </div>
+
+    <script>
+      "use strict";
+
+      /* =========================================================
+   DATA
+========================================================= */
+      const MODULES = [
+        { id: "home", icon: "🏠", title: "Accueil" },
+        { id: "roadmap", icon: "🗺️", title: "Roadmap complète" },
+        { id: "fundamentals", icon: "📘", title: "1. QA Fundamentals" },
+        { id: "sdlc", icon: "🔄", title: "2. SDLC & STLC" },
+        { id: "types", icon: "🧪", title: "3. Types de tests" },
+        { id: "testcases", icon: "📝", title: "4. Test Cases" },
+        { id: "bugs", icon: "🐞", title: "5. Bug Reporting" },
+        { id: "web", icon: "🌐", title: "6. Web & DevTools" },
+        { id: "api", icon: "🔌", title: "7. API Testing" },
+        { id: "sql", icon: "🗄️", title: "8. SQL pour QA" },
+        { id: "git", icon: "🌿", title: "9. Git & GitHub" },
+        { id: "js", icon: "🟨", title: "10. JavaScript pour QA" },
+        { id: "python", icon: "🐍", title: "11. Python pour QA" },
+        { id: "java", icon: "☕", title: "12. Java pour QA" },
+        { id: "automation", icon: "🤖", title: "13. Automation" },
+        { id: "playwright", icon: "🎭", title: "14. Playwright" },
+        { id: "selenium", icon: "🧭", title: "15. Selenium" },
+        { id: "cucumber", icon: "🥒", title: "16. Cucumber & Gherkin" },
+        { id: "cicd", icon: "🚀", title: "17. CI/CD" },
+        { id: "agile", icon: "🔁", title: "18. Agile / Scrum" },
+        { id: "security", icon: "🔐", title: "19. Security Testing" },
+        { id: "tools", icon: "🧰", title: "20. Outils QA" },
+        { id: "lab", icon: "🧪", title: "21. Practice Lab" },
+        { id: "projects", icon: "🏗️", title: "22. Projets réels" },
+        { id: "interview", icon: "🎤", title: "23. Interview" },
+        { id: "cheatsheets", icon: "📋", title: "24. Cheat Sheets" },
+        { id: "glossary", icon: "📖", title: "25. Dictionnaire A-Z" },
+        { id: "quiz", icon: "✅", title: "26. Quiz général" },
+      ];
+
+      const GLOSSARY = [
+        [
+          "API",
+          "Interface permettant à des logiciels de communiquer.",
+          "API testing : vérifier requêtes, réponses, codes et données.",
+        ],
+        [
+          "Assertion",
+          "Vérification automatique d'une condition attendue.",
+          "Ex : vérifier que status === 200.",
+        ],
+        [
+          "Authentication",
+          "Vérification de l'identité d'un utilisateur.",
+          "Tester login, token, session, expiration.",
+        ],
+        [
+          "Authorization",
+          "Détermine ce qu'un utilisateur a le droit de faire.",
+          "Tester les rôles user/admin.",
+        ],
+        [
+          "Bug",
+          "Comportement du logiciel qui ne correspond pas au comportement attendu.",
+          "Ex : bouton Login sans réaction.",
+        ],
+        [
+          "CI",
+          "Intégration continue : changements intégrés et vérifiés fréquemment.",
+          "Les tests peuvent être lancés à chaque push.",
+        ],
+        [
+          "CD",
+          "Livraison/déploiement continu selon le pipeline choisi.",
+          "Un pipeline peut déployer après des tests réussis.",
+        ],
+        [
+          "Defect",
+          "Écart constaté entre attendu et réel, suivi comme anomalie.",
+          "Le QA documente le défaut.",
+        ],
+        [
+          "DOM",
+          "Structure d'objets représentant la page HTML dans le navigateur.",
+          "Les locators ciblent des éléments du DOM.",
+        ],
+        ["Endpoint", "Point d'accès précis d'une API.", "Ex : GET /users/42."],
+        [
+          "Error",
+          "Erreur humaine qui peut conduire à un défaut.",
+          "Ex : mauvaise condition dans le code.",
+        ],
+        [
+          "Failure",
+          "Manifestation observable du logiciel qui ne réalise pas ce qui est attendu.",
+          "Ex : application qui refuse une opération valide.",
+        ],
+        [
+          "Fixture",
+          "Données ou préparation réutilisable pour des tests.",
+          "Playwright utilise des fixtures pour préparer le contexte.",
+        ],
+        [
+          "Foreign Key",
+          "Colonne reliant une table à une autre.",
+          "Ex : orders.user_id → users.id.",
+        ],
+        [
+          "Git",
+          "Système de contrôle de versions distribué.",
+          "Les tests et scripts peuvent être versionnés.",
+        ],
+        [
+          "Gherkin",
+          "Syntaxe lisible utilisée notamment avec Cucumber.",
+          "Given / When / Then.",
+        ],
+        [
+          "HTTP 200",
+          "Réponse indiquant généralement une requête réussie.",
+          "À vérifier pour une opération qui doit réussir.",
+        ],
+        [
+          "HTTP 201",
+          "Ressource créée avec succès.",
+          "Ex : POST /users crée un utilisateur.",
+        ],
+        [
+          "HTTP 400",
+          "Requête invalide côté client.",
+          "Tester données manquantes ou mal formées.",
+        ],
+        [
+          "HTTP 401",
+          "Authentification requise ou invalide.",
+          "Token absent/incorrect selon l'API.",
+        ],
+        ["HTTP 403", "Accès refusé.", "Tester les permissions."],
+        [
+          "HTTP 404",
+          "Ressource non trouvée.",
+          "Tester URL ou identifiant inexistant.",
+        ],
+        [
+          "HTTP 500",
+          "Erreur interne serveur.",
+          "À investiguer/signaler si inattendue.",
+        ],
+        [
+          "JOIN",
+          "Opération SQL qui combine des données de plusieurs tables.",
+          "Vérifier une relation utilisateur/commande.",
+        ],
+        [
+          "JSON",
+          "Format texte courant pour échanger des données structurées.",
+          "Très fréquent dans les APIs.",
+        ],
+        [
+          "Locator",
+          "Moyen d'identifier un élément à automatiser.",
+          "Role, label, CSS, id, etc.",
+        ],
+        [
+          "Page Object Model",
+          "Organisation du code d'automatisation par pages/composants.",
+          "Réduit la duplication et facilite la maintenance.",
+        ],
+        [
+          "Priority",
+          "Urgence métier de correction d'un problème.",
+          "Une priorité n'est pas la même chose que la gravité.",
+        ],
+        [
+          "Regression Testing",
+          "Tests qui vérifient que des fonctionnalités existantes n'ont pas régressé.",
+          "Très utile après des changements.",
+        ],
+        [
+          "Retesting",
+          "Rejouer un test ayant échoué après correction du défaut.",
+          "Objectif : vérifier la correction précise.",
+        ],
+        [
+          "Severity",
+          "Impact/gravity technique ou fonctionnelle d'un défaut.",
+          "À distinguer de Priority.",
+        ],
+        [
+          "Smoke Testing",
+          "Vérification rapide d'un build sur des fonctionnalités critiques.",
+          "Si le smoke échoue, on peut arrêter une campagne.",
+        ],
+        [
+          "SQL",
+          "Langage utilisé pour interroger/manipuler des bases relationnelles.",
+          "QA l'utilise pour vérifier les données.",
+        ],
+        [
+          "STLC",
+          "Cycle de vie des activités de test.",
+          "Analyse → planification → conception → exécution → clôture.",
+        ],
+        [
+          "Test Case",
+          "Procédure structurée pour vérifier un comportement.",
+          "Préconditions, étapes, données, attendu, résultat.",
+        ],
+        [
+          "Test Scenario",
+          "Situation ou objectif général à tester.",
+          "Ex : tester le login.",
+        ],
+        ["Test Suite", "Ensemble organisé de test cases.", "Ex : suite Login."],
+        [
+          "UAT",
+          "User Acceptance Testing, validation du produit selon le besoin métier.",
+          "Souvent réalisée avec les parties prenantes.",
+        ],
+        [
+          "Verification",
+          "Évaluer si le produit est construit conformément aux spécifications.",
+          "Question : construit-on correctement le produit ?",
+        ],
+        [
+          "Validation",
+          "Évaluer si le produit répond au besoin et à l'usage prévu.",
+          "Question : construit-on le bon produit ?",
+        ],
+      ];
+
+      const LANGS = {
+        JavaScript: {
+          desc: "Langage très utile pour les tests web et l'automatisation.",
+          items: [
+            [
+              "Variable",
+              "Stocker une valeur.",
+              "const email = 'test@example.com';",
+              "Stocker des données de test.",
+            ],
+            [
+              "Condition",
+              "Exécuter une partie du code si une condition est vraie.",
+              "if(status === 200){ ... }",
+              "Décider PASS/FAIL.",
+            ],
+            [
+              "Array",
+              "Liste de valeurs.",
+              "const users = ['A','B'];",
+              "Tester plusieurs données.",
+            ],
+            [
+              "Object",
+              "Structure clé/valeur.",
+              "const user={name:'Anwar',role:'QA'};",
+              "Représenter des données API.",
+            ],
+            [
+              "Function",
+              "Bloc réutilisable.",
+              "function login(){...}",
+              "Créer des helpers.",
+            ],
+            [
+              "Async/Await",
+              "Gérer des opérations asynchrones.",
+              "await page.goto(url);",
+              "Très courant avec Playwright.",
+            ],
+            [
+              "Assertion",
+              "Vérifier une condition.",
+              "expect(status).toBe(200);",
+              "Déterminer si le test passe.",
+            ],
+          ],
+        },
+        Python: {
+          desc: "Langage simple et puissant, utilisé en automation, API, data et tooling.",
+          items: [
+            [
+              "Variable",
+              "Nom associé à une valeur.",
+              "email = 'test@example.com'",
+              "Préparer des données.",
+            ],
+            [
+              "List",
+              "Collection ordonnée.",
+              "users = ['A','B']",
+              "Paramétrer des tests.",
+            ],
+            [
+              "Dictionary",
+              "Paires clé/valeur.",
+              "user = {'role':'QA'}",
+              "Manipuler JSON.",
+            ],
+            [
+              "Condition",
+              "Choix selon une condition.",
+              "if status == 200:",
+              "Vérifications.",
+            ],
+            [
+              "Loop",
+              "Répéter une opération.",
+              "for user in users:",
+              "Tests data-driven.",
+            ],
+            [
+              "Function",
+              "Bloc réutilisable.",
+              "def login():",
+              "Helpers et fixtures.",
+            ],
+            [
+              "Exception",
+              "Gérer une erreur d'exécution.",
+              "try: ... except: ...",
+              "Stabiliser des scripts/outils.",
+            ],
+          ],
+        },
+        Java: {
+          desc: "Langage très présent dans les environnements d'entreprise et l'automatisation Selenium.",
+          items: [
+            [
+              "Variable",
+              "Déclarer une donnée.",
+              "String email = 'test@example.com';",
+              "Données de test.",
+            ],
+            [
+              "Class",
+              "Modèle regroupant données et méthodes.",
+              "class LoginPage { ... }",
+              "Page Object Model.",
+            ],
+            [
+              "Method",
+              "Fonction appartenant à une classe.",
+              "void login(){...}",
+              "Actions réutilisables.",
+            ],
+            [
+              "If",
+              "Condition.",
+              "if(status == 200){...}",
+              "Assertions/logique.",
+            ],
+            ["List", "Collection.", "List<String> users;", "Jeux de données."],
+            [
+              "Exception",
+              "Gestion d'erreurs.",
+              "try { ... } catch(Exception e) { ... }",
+              "Robustesse des tests.",
+            ],
+          ],
+        },
+        SQL: {
+          desc: "Langage de requête pour vérifier les données en base.",
+          items: [
+            [
+              "SELECT",
+              "Lire des données.",
+              "SELECT * FROM users;",
+              "Vérifier les données.",
+            ],
+            [
+              "WHERE",
+              "Filtrer.",
+              "SELECT * FROM users WHERE id=1;",
+              "Cibler un enregistrement.",
+            ],
+            [
+              "JOIN",
+              "Relier des tables.",
+              "SELECT ... FROM users JOIN orders ...",
+              "Vérifier des relations.",
+            ],
+            [
+              "COUNT",
+              "Compter.",
+              "SELECT COUNT(*) FROM users;",
+              "Vérifier des volumes.",
+            ],
+            [
+              "GROUP BY",
+              "Regrouper.",
+              "SELECT role, COUNT(*) FROM users GROUP BY role;",
+              "Contrôles de cohérence.",
+            ],
+            [
+              "ORDER BY",
+              "Trier.",
+              "SELECT * FROM users ORDER BY name;",
+              "Vérifier le tri.",
+            ],
+            [
+              "INSERT",
+              "Ajouter une ligne.",
+              "INSERT INTO users(name) VALUES('A');",
+              "Tests de données, selon droits.",
+            ],
+            [
+              "UPDATE",
+              "Modifier une ligne.",
+              "UPDATE users SET role='QA' WHERE id=1;",
+              "Préparer des données de test, avec prudence.",
+            ],
+            [
+              "DELETE",
+              "Supprimer une ligne.",
+              "DELETE FROM users WHERE id=1;",
+              "Nettoyage de données de test, avec prudence.",
+            ],
+          ],
+        },
+        HTML: {
+          desc: "Structure des pages web.",
+          items: [
+            [
+              "Element",
+              "Bloc HTML de la page.",
+              "<button>Login</button>",
+              "Identifier ce qui doit être testé.",
+            ],
+            [
+              "Attribute",
+              "Information portée par un élément.",
+              "id='email'",
+              "Créer/utiliser des locators.",
+            ],
+            [
+              "Form",
+              "Zone de saisie utilisateur.",
+              "<form>...</form>",
+              "Tester validation et soumission.",
+            ],
+            [
+              "Input",
+              "Champ de saisie.",
+              "<input id='email'>",
+              "Tester saisie, validation, accessibilité.",
+            ],
+          ],
+        },
+        CSS: {
+          desc: "Style et présentation des pages.",
+          items: [
+            [
+              "Selector",
+              "Cible un élément.",
+              "button.login { ... }",
+              "Comprendre les locators CSS.",
+            ],
+            [
+              "Responsive",
+              "Adaptation à différentes tailles d'écran.",
+              "@media ...",
+              "Tester mobile/tablette/desktop.",
+            ],
+            [
+              "Visibility",
+              "État visible/caché d'un élément.",
+              "display:none",
+              "Tester UI conditionnelle.",
+            ],
+          ],
+        },
+        Bash: {
+          desc: "Commandes terminal utiles pour travailler avec projets et CI.",
+          items: [
+            [
+              "pwd",
+              "Afficher le dossier courant.",
+              "pwd",
+              "Comprendre où le script s'exécute.",
+            ],
+            ["ls", "Lister les fichiers.", "ls -la", "Explorer un projet."],
+            ["cd", "Changer de dossier.", "cd tests", "Naviguer."],
+            [
+              "mkdir",
+              "Créer un dossier.",
+              "mkdir reports",
+              "Préparer des répertoires.",
+            ],
+            [
+              "npm test",
+              "Commande de projet Node fréquente.",
+              "npm test",
+              "Lancer les tests selon le projet.",
+            ],
+          ],
+        },
+      };
+
+      const TOOLS = [
+        ["Jira", "Gestion des tickets, bugs, user stories et sprints."],
+        [
+          "Postman",
+          "Créer et exécuter des requêtes API, vérifier réponses et collections.",
+        ],
+        ["Playwright", "Automatisation moderne des navigateurs et tests web."],
+        [
+          "Selenium",
+          "Automatisation de navigateurs, très répandue en entreprise.",
+        ],
+        ["Cucumber", "Framework BDD utilisant notamment Gherkin."],
+        ["GitHub", "Hébergement Git, collaboration et pull requests."],
+        ["GitHub Actions", "CI/CD intégrée à GitHub."],
+        ["JMeter", "Outil de tests de performance et charge."],
+        [
+          "Docker",
+          "Conteneurisation, utile pour environnements reproductibles.",
+        ],
+        ["Jenkins", "Serveur d'automatisation/CI largement utilisé."],
+        [
+          "TestRail",
+          "Gestion de cas de test et campagnes, selon l'organisation.",
+        ],
+        [
+          "DevTools",
+          "Outils navigateur pour inspecter DOM, console, réseau, stockage.",
+        ],
+      ];
+
+      const QUIZ = [
+        [
+          "QA signifie principalement :",
+          ["Quality Assurance", "Quick Application", "Query Automation"],
+          0,
+          "QA = Quality Assurance.",
+        ],
+        [
+          "Quel test vérifie les anciennes fonctionnalités après un changement ?",
+          ["Smoke", "Regression", "UAT"],
+          1,
+          "Regression testing cherche les régressions.",
+        ],
+        [
+          "Quel code correspond généralement à Not Found ?",
+          ["200", "401", "404"],
+          2,
+          "404 = Not Found.",
+        ],
+        [
+          "Quel outil est destiné aux requêtes API ?",
+          ["Postman", "Git", "Jira"],
+          0,
+          "Postman permet de créer/exécuter des requêtes API.",
+        ],
+        [
+          "SQL SELECT sert principalement à :",
+          ["Lire des données", "Compiler Java", "Piloter Chrome"],
+          0,
+          "SELECT interroge des données.",
+        ],
+        [
+          "Severity et Priority sont :",
+          [
+            "Toujours identiques",
+            "Deux notions différentes",
+            "Des navigateurs",
+          ],
+          1,
+          "Severity = impact; Priority = urgence métier.",
+        ],
+        [
+          "Quel outil automatise les navigateurs ?",
+          ["Playwright", "Jira", "SQL"],
+          0,
+          "Playwright est un outil d'automatisation web.",
+        ],
+        [
+          "Given / When / Then appartient notamment à :",
+          ["Gherkin", "CSS", "SQL"],
+          0,
+          "Gherkin utilise cette structure BDD.",
+        ],
+        [
+          "Git commit sert à :",
+          [
+            "Enregistrer un snapshot dans l'historique Git",
+            "Supprimer GitHub",
+            "Ouvrir Chrome",
+          ],
+          0,
+          "Un commit enregistre un ensemble de changements.",
+        ],
+        [
+          "401 indique généralement :",
+          [
+            "Non authentifié / authentification invalide",
+            "Ressource introuvable",
+            "Succès",
+          ],
+          0,
+          "401 est lié à l'authentification.",
+        ],
+        [
+          "403 indique généralement :",
+          ["Accès refusé", "Création réussie", "Erreur DNS obligatoire"],
+          0,
+          "403 = Forbidden.",
+        ],
+        [
+          "Une assertion sert à :",
+          [
+            "Vérifier une condition attendue",
+            "Créer un serveur",
+            "Dessiner CSS",
+          ],
+          0,
+          "Une assertion compare le résultat attendu/réel.",
+        ],
+        [
+          "POM signifie :",
+          ["Page Object Model", "Project Output Mode", "Public Object Memory"],
+          0,
+          "POM organise l'automation par pages/composants.",
+        ],
+        [
+          "STLC concerne :",
+          [
+            "Le cycle des activités de test",
+            "Le design graphique",
+            "Le réseau Wi-Fi",
+          ],
+          0,
+          "STLC = Software Testing Life Cycle.",
+        ],
+        [
+          "UAT signifie :",
+          [
+            "User Acceptance Testing",
+            "Universal API Tool",
+            "User Automation Type",
+          ],
+          0,
+          "UAT = User Acceptance Testing.",
+        ],
+      ];
+
+      const INTERVIEW = [
+        [
+          "Qu'est-ce que QA ?",
+          "QA (Quality Assurance) regroupe les activités visant à assurer et améliorer la qualité du processus et du produit. Le testing est une activité importante du QA, mais QA ne se limite pas à exécuter des tests.",
+        ],
+        [
+          "QA vs QC ?",
+          "QA est orienté processus/prévention et amélioration; QC est orienté contrôle du produit. Les définitions peuvent varier selon l'entreprise, donc il faut suivre le vocabulaire du contexte.",
+        ],
+        [
+          "Smoke vs Sanity ?",
+          "Smoke : vérification rapide et large de fonctionnalités critiques pour savoir si un build est testable. Sanity : vérification ciblée après un changement ou correctif précis.",
+        ],
+        [
+          "Regression vs Retesting ?",
+          "Retesting vérifie qu'un défaut précis est corrigé. Regression vérifie que le changement n'a pas cassé d'autres fonctionnalités.",
+        ],
+        [
+          "Severity vs Priority ?",
+          "Severity décrit l'impact du problème. Priority décrit l'urgence métier de sa correction. Les deux peuvent être élevés, faibles ou différents selon le contexte.",
+        ],
+        [
+          "Comment écrire un bon bug ?",
+          "Titre précis, environnement, préconditions, étapes reproductibles, données, attendu, réel, pièces jointes/logs utiles, severity/priority selon le process.",
+        ],
+        [
+          "Pourquoi SQL en QA ?",
+          "Pour vérifier que les opérations de l'interface/API ont produit les bonnes données en base et pour contrôler cohérence et intégrité, selon les accès autorisés.",
+        ],
+        [
+          "Pourquoi tester une API ?",
+          "Parce qu'elle porte souvent la logique métier et permet de tester le backend indépendamment de l'interface.",
+        ],
+        [
+          "Qu'est-ce qu'une assertion ?",
+          "Une vérification automatique qui compare une condition attendue avec le résultat observé.",
+        ],
+        [
+          "Pourquoi automatiser ?",
+          "Pour exécuter rapidement et de façon répétable des scénarios adaptés à l'automatisation, notamment les régressions fréquentes. Tout ne doit pas être automatisé.",
+        ],
+        [
+          "Playwright vs Selenium ?",
+          "Deux solutions d'automatisation web avec des approches et écosystèmes différents. Le choix dépend du projet, de l'équipe, des navigateurs, de l'infrastructure et des contraintes.",
+        ],
+        [
+          "Qu'est-ce qu'un pipeline CI ?",
+          "Une suite automatisée qui peut récupérer le code, installer les dépendances, construire le projet, lancer des tests et publier des résultats.",
+        ],
+        [
+          "Qu'est-ce qu'une User Story ?",
+          "Une description d'un besoin du point de vue utilisateur, généralement accompagnée de critères d'acceptation.",
+        ],
+        [
+          "Qu'est-ce qu'un locator ?",
+          "Un moyen de cibler un élément de l'interface pour interagir avec lui ou vérifier son état.",
+        ],
+        [
+          "Que fait Postman ?",
+          "Il permet de créer, envoyer et organiser des requêtes API et d'inspecter les réponses.",
+        ],
+      ];
+
+      /* =========================================================
+   STATE
+========================================================= */
+      const KEY = "qa_academy_v2";
+      let state = { done: {}, quiz: {}, xp: 0, theme: "dark" };
+      try {
+        const saved = JSON.parse(localStorage.getItem(KEY) || "null");
+        if (saved) state = Object.assign(state, saved);
+      } catch (e) {}
+      function save() {
+        try {
+          localStorage.setItem(KEY, JSON.stringify(state));
+        } catch (e) {}
+      }
+      function recalcXP() {
+        state.xp =
+          Object.keys(state.done).length * 50 +
+          Object.keys(state.quiz).length * 10 +
+          (state.labDone ? 100 : 0) +
+          (state.projectDone ? 150 : 0);
+        document.getElementById("xp").textContent = state.xp + " XP";
+        save();
+      }
+      function complete(id) {
+        state.done[id] = true;
+        recalcXP();
+        renderHome();
+        const b = document.querySelector(`[data-complete="${id}"]`);
+        if (b) {
+          b.textContent = "✓ Module terminé";
+          b.disabled = true;
+        }
+      }
+
+      /* =========================================================
+   NAVIGATION
+========================================================= */
+      const nav = document.getElementById("nav");
+      const content = document.getElementById("content");
+      const sidebar = document.getElementById("sidebar");
+      const pages = {};
+      MODULES.forEach((m) => {
+        const b = document.createElement("button");
+        b.dataset.id = m.id;
+        b.innerHTML = `<span>${m.icon}</span><span>${m.title}</span>`;
+        b.onclick = () => go(m.id);
+        nav.appendChild(b);
+        const s = document.createElement("section");
+        s.className = "section";
+        s.id = "page-" + m.id;
+        content.appendChild(s);
+        pages[m.id] = s;
+      });
+      function go(id) {
+        Object.values(pages).forEach((p) => p.classList.remove("active"));
+        if (pages[id]) pages[id].classList.add("active");
+        nav
+          .querySelectorAll("button")
+          .forEach((b) => b.classList.toggle("active", b.dataset.id === id));
+        sidebar.classList.remove("open");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+      document.getElementById("menuBtn").onclick = () =>
+        sidebar.classList.toggle("open");
+
+      /* =========================================================
+   HOME + ROADMAP
+========================================================= */
+      function progressPct() {
+        const ids = MODULES.filter(
+          (m) =>
+            m.id !== "home" &&
+            m.id !== "roadmap" &&
+            m.id !== "glossary" &&
+            m.id !== "quiz",
+        ).map((m) => m.id);
+        const done = ids.filter((id) => state.done[id]).length;
+        return Math.round((done / ids.length) * 100);
+      }
+      function renderHome() {
+        pages.home.innerHTML = `
+ <div class="hero">
+   <div class="eyebrow">Bienvenue</div>
+   <h1>QA Engineer Academy</h1>
+   <p class="lede">Une plateforme complète pour apprendre le QA Engineering de zéro jusqu'aux bases professionnelles : testing, API, SQL, Git, automation, Playwright, Selenium, CI/CD, Agile, sécurité, projets et entretien.</p>
+   <div class="card">
+    <div style="display:flex;justify-content:space-between"><b>Progression</b><span class="mono">${progressPct()}%</span></div>
+    <div class="progress" style="margin-top:9px"><i style="width:${progressPct()}%"></i></div>
+    <p class="small">Les modules terminés et les scores sont sauvegardés localement.</p>
+   </div>
+ </div>
+ <div class="grid">
+ ${MODULES.filter((m) => m.id !== "home")
+   .map((m) => {
+     const done = !!state.done[m.id];
+     return `<div class="card click" onclick="go('${m.id}')">
+    <h3>${m.icon} ${m.title}</h3>
+    <span class="tag ${done ? "good" : ""}">${done ? "✓ Terminé" : "À apprendre"}</span>
+    <span class="tag">${m.id === "lab" || m.id === "projects" ? "Pratique" : "Cours"}</span>
+   </div>`;
+   })
+   .join("")}
+ </div>
+ <div class="lesson">
+  <h2>Comment apprendre ici</h2>
+  <div class="diagram">
+   <span class="node">📘 Comprendre</span><span class="arrow">→</span>
+   <span class="node">🧩 Exemple</span><span class="arrow">→</span>
+   <span class="node">🧪 Exercice</span><span class="arrow">→</span>
+   <span class="node">✅ Quiz</span><span class="arrow">→</span>
+   <span class="node">💼 Projet</span>
+  </div>
+ </div>`;
+      }
+      function renderRoadmap() {
+        const steps = [
+          ["fundamentals", "Bases QA"],
+          ["sdlc", "SDLC/STLC"],
+          ["types", "Types de tests"],
+          ["testcases", "Test Cases"],
+          ["bugs", "Bug Reporting"],
+          ["web", "Web/DevTools"],
+          ["api", "API"],
+          ["sql", "SQL"],
+          ["git", "Git/GitHub"],
+          ["js", "JavaScript"],
+          ["python", "Python"],
+          ["java", "Java"],
+          ["automation", "Automation"],
+          ["playwright", "Playwright"],
+          ["selenium", "Selenium"],
+          ["cucumber", "Cucumber"],
+          ["cicd", "CI/CD"],
+          ["agile", "Agile/Scrum"],
+          ["security", "Security"],
+          ["tools", "Outils"],
+          ["lab", "Practice Lab"],
+          ["projects", "Projets"],
+          ["interview", "Interview"],
+        ];
+        pages.roadmap.innerHTML = `
+ <div class="eyebrow">Plan de carrière</div><h1>Roadmap QA Engineer</h1>
+ <p class="lede">Suis l'ordre, mais reviens aux modules selon tes besoins.</p>
+ <div class="lesson"><div class="roadmap-list">
+ ${steps
+   .map(
+     (
+       x,
+       i,
+     ) => `<div class="card click" style="margin:7px 0" onclick="go('${x[0]}')">
+   <b>${i + 1}. ${x[1]}</b> <span class="tag ${state.done[x[0]] ? "good" : ""}">${state.done[x[0]] ? "✓ terminé" : "ouvrir"}</span>
+   <div class="small">${i < 5 ? "Fondamentaux" : i < 10 ? "Technique QA" : i < 17 ? "Automation & engineering" : "Professionnalisation"}</div>
+ </div>`,
+   )
+   .join("")}
+ </div></div>
+ <div class="lesson"><h3>Objectif Junior QA</h3>
+ <div class="diagram"><span class="node">Manual Testing</span><span class="arrow">→</span><span class="node">API + SQL</span><span class="arrow">→</span><span class="node">Git</span><span class="arrow">→</span><span class="node">Automation</span><span class="arrow">→</span><span class="node">CI/CD</span></div>
+ </div>`;
+      }
+
+      /* =========================================================
+   GENERIC LESSON HELPERS
+========================================================= */
+      function completeButton(id) {
+        return `<button class="btn" data-complete="${id}" onclick="complete('${id}')">${state.done[id] ? "✓ Module terminé" : "Marquer le module comme terminé"}</button>`;
+      }
+      function lesson(title, body, level = "NIVEAU 1") {
+        return `<article class="lesson"><span class="level">${level}</span><h3>${title}</h3>${body}</article>`;
+      }
+      function table(headers, rows) {
+        return `<table><thead><tr>${headers.map((h) => `<th>${h}</th>`).join("")}</tr></thead><tbody>${rows.map((r) => `<tr>${r.map((c) => `<td>${c}</td>`).join("")}</tr>`).join("")}</tbody></table>`;
+      }
+
+      /* =========================================================
+   FUNDAMENTALS
+========================================================= */
+      pages.fundamentals.innerHTML = `
+<div class="eyebrow">Module 1</div><h1>QA Fundamentals</h1>
+<p class="lede">Comprendre ce qu'est la qualité, le testing et le vocabulaire de base.</p>
+${lesson(
+  "QA, QC et Testing",
+  `
+<p><b>QA (Quality Assurance)</b> concerne l'assurance qualité et l'amélioration des processus afin de réduire les problèmes. <b>QC (Quality Control)</b> se concentre davantage sur le contrôle du produit. <b>Testing</b> est l'activité de vérification du logiciel par des tests.</p>
+<div class="diagram"><span class="node">Processus & prévention</span><span class="arrow">→</span><span class="node">QA</span><br><span class="node">Produit</span><span class="arrow">→</span><span class="node">QC / contrôle</span><br><span class="node">Tests exécutés</span><span class="arrow">→</span><span class="node">Evidence / résultats</span></div>
+<div class="callout">À retenir : QA ne signifie pas seulement « tester ». Dans les entreprises, le périmètre exact du rôle dépend de l'organisation.</div>`,
+)}
+${lesson(
+  "Error, Defect, Bug, Failure",
+  `
+<p>Ces termes sont parfois utilisés différemment selon les équipes. Une façon pédagogique de les distinguer est :</p>
+${table(
+  ["Terme", "Idée simple", "Exemple"],
+  [
+    ["Error", "Erreur humaine", "Une condition de code mal écrite."],
+    [
+      "Defect",
+      "Problème dans un artefact logiciel",
+      "Le code produit un comportement contraire à la spécification.",
+    ],
+    [
+      "Bug",
+      "Terme courant pour un problème logiciel",
+      "Le bouton Login n'envoie rien.",
+    ],
+    [
+      "Failure",
+      "Comportement incorrect observable à l'exécution",
+      "Une action valide échoue pour l'utilisateur.",
+    ],
+  ],
+)}`,
+  "NIVEAU 2",
+)}
+${lesson(
+  "Verification vs Validation",
+  `
+<div class="diagram"><span class="node">Verification</span><span class="arrow">→</span><span class="node">Conformité aux spécifications</span><br><span class="node">Validation</span><span class="arrow">→</span><span class="node">Réponse au besoin / usage</span></div>
+<p><b>Verification</b> pose notamment la question : « construisons-nous le produit conformément aux exigences ? »<br><b>Validation</b> pose notamment : « le produit répond-il au besoin et à l'usage prévu ? »</p>`,
+  "NIVEAU 2",
+)}
+${lesson(
+  "Les 7 idées fondamentales du testing",
+  `
+<ol>
+<li>Testing montre la présence de défauts, pas leur absence absolue.</li>
+<li>Il est impossible de tester toutes les combinaisons.</li>
+<li>Tester tôt réduit le coût des défauts détectés tard.</li>
+<li>Les défauts ont tendance à se concentrer.</li>
+<li>La répétition des mêmes tests peut perdre de son efficacité.</li>
+<li>Testing dépend du contexte.</li>
+<li>Un logiciel sans bugs connus n'est pas forcément utile au besoin.</li>
+</ol>`,
+  "NIVEAU 3",
+)}
+${completeButton("fundamentals")}`;
+
+      /* =========================================================
+   SDLC / STLC
+========================================================= */
+      pages.sdlc.innerHTML = `
+<div class="eyebrow">Module 2</div><h1>SDLC & STLC</h1>
+<p class="lede">Comprendre où intervient le QA dans le cycle logiciel.</p>
+${lesson(
+  "SDLC",
+  `
+<div class="diagram"><span class="node">Requirements</span><span class="arrow">→</span><span class="node">Design</span><span class="arrow">→</span><span class="node">Development</span><span class="arrow">→</span><span class="node">Testing</span><span class="arrow">→</span><span class="node">Release</span><span class="arrow">→</span><span class="node">Maintenance</span></div>
+<p>Le SDLC décrit les grandes activités de développement d'un logiciel. Les méthodes Agile peuvent organiser ces activités en itérations.</p>`,
+)}
+${lesson(
+  "STLC",
+  `
+<div class="diagram"><span class="node">Analyse exigences</span><span class="arrow">→</span><span class="node">Plan test</span><span class="arrow">→</span><span class="node">Conception</span><span class="arrow">→</span><span class="node">Préparation</span><span class="arrow">→</span><span class="node">Exécution</span><span class="arrow">→</span><span class="node">Clôture</span></div>
+<p>STLC = ensemble structuré d'activités de test. Le QA peut commencer très tôt, notamment en relisant les exigences et critères d'acceptation.</p>`,
+)}
+${lesson(
+  "Pourquoi tester tôt ?",
+  `
+<p>Si une exigence ambiguë est découverte avant le développement, sa clarification peut éviter du travail. Une fois le logiciel développé et livré, la correction peut demander davantage de temps et de coordination.</p>
+<div class="callout">Shift-left = intégrer les activités qualité plus tôt dans le cycle.</div>`,
+)}
+${completeButton("sdlc")}`;
+
+      /* =========================================================
+   TEST TYPES
+========================================================= */
+      pages.types.innerHTML = `
+<div class="eyebrow">Module 3</div><h1>Types de tests</h1>
+<p class="lede">Apprends quand utiliser chaque type et ne les confonds plus.</p>
+${lesson(
+  "Smoke Testing",
+  `
+<p>Vérification rapide des fonctionnalités critiques d'un build pour savoir si une campagne de test plus complète peut commencer.</p>
+<div class="diagram"><span class="node">Build</span><span class="arrow">→</span><span class="node">Smoke</span><span class="arrow">→</span><span class="node">PASS = continuer</span><br><span class="node">FAIL = investiguer / build non testable</span></div>`,
+)}
+${lesson("Sanity Testing", `<p>Vérification ciblée et rapide d'une zone touchée par un changement, souvent après un correctif ou une modification limitée.</p>`)}
+${lesson(
+  "Regression Testing",
+  `
+<p>Vérifie que des fonctionnalités existantes fonctionnent toujours après des changements.</p>
+<div class="diagram"><span class="node">Changement</span><span class="arrow">→</span><span class="node">Anciennes fonctions</span><span class="arrow">→</span><span class="node">Pas de régression</span></div>`,
+)}
+${lesson("Retesting", `<p>Rejoue un test qui avait échoué pour vérifier qu'un défaut précis a bien été corrigé.</p><div class="callout">Retesting = « la correction marche-t-elle ? »<br>Regression = « cette correction a-t-elle cassé autre chose ? »</div>`)}
+${lesson(
+  "Functional vs Non-functional",
+  table(
+    ["Famille", "Question", "Exemple"],
+    [
+      [
+        "Functional",
+        "Le système fait-il ce qu'il doit faire ?",
+        "Login avec identifiants valides.",
+      ],
+      [
+        "Performance",
+        "Le système tient-il la charge / le temps attendu ?",
+        "Temps de réponse sous charge.",
+      ],
+      [
+        "Security",
+        "Les contrôles de sécurité fonctionnent-ils ?",
+        "Permissions et sessions.",
+      ],
+      [
+        "Usability",
+        "L'interface est-elle utilisable ?",
+        "Parcours compréhensible.",
+      ],
+      [
+        "Compatibility",
+        "Fonctionne-t-il dans les environnements supportés ?",
+        "Navigateurs / appareils.",
+      ],
+    ],
+  ),
+  "NIVEAU 2",
+)}
+${lesson(
+  "Niveaux de test",
+  table(
+    ["Niveau", "But", "Exemple"],
+    [
+      ["Unit", "Tester une petite unité isolée.", "Fonction de calcul."],
+      [
+        "Integration",
+        "Tester les interactions entre composants.",
+        "Service ↔ base.",
+      ],
+      ["System", "Tester le système intégré.", "Parcours complet."],
+      [
+        "Acceptance",
+        "Vérifier l'acceptation selon le besoin.",
+        "Scénario métier.",
+      ],
+    ],
+  ),
+  "NIVEAU 2",
+)}
+${completeButton("types")}`;
+
+      /* =========================================================
+   TEST CASES
+========================================================= */
+      pages.testcases.innerHTML = `
+<div class="eyebrow">Module 4</div><h1>Test Cases</h1>
+<p class="lede">Transforme une exigence en vérifications reproductibles.</p>
+${lesson(
+  "Anatomie d'un test case",
+  table(
+    ["Champ", "Contenu"],
+    [
+      ["ID", "Identifiant unique : TC-LOGIN-001"],
+      ["Title", "Connexion avec identifiants valides"],
+      ["Preconditions", "Utilisateur créé et page accessible."],
+      ["Test Data", "email@test.com / mot de passe de test"],
+      ["Steps", "Actions précises, numérotées."],
+      ["Expected Result", "Résultat attendu pour chaque étape ou le scénario."],
+      ["Actual Result", "Ce qui s'est réellement produit."],
+      ["Status", "PASS / FAIL / BLOCKED."],
+    ],
+  ),
+)}
+${lesson(
+  "Exemple complet",
+  `
+<pre>TC-LOGIN-001
+Titre: Login avec identifiants valides
+
+Précondition:
+Un compte de test existe.
+
+Étapes:
+1. Ouvrir /login
+2. Saisir un email valide
+3. Saisir un mot de passe valide
+4. Cliquer sur Login
+
+Attendu:
+Le dashboard s'affiche et l'utilisateur est authentifié.
+
+Résultat:
+PASS</pre>`,
+  "NIVEAU 2",
+)}
+${lesson(
+  "Boundary Value Analysis",
+  `
+<p>Pour un champ limité, tester les valeurs autour des limites. Si l'âge accepté est 18–65 :</p>
+<div class="diagram"><span class="node">17 ❌</span><span class="node">18 ✅</span><span class="node">19 ✅</span><span class="node">64 ✅</span><span class="node">65 ✅</span><span class="node">66 ❌</span></div>`,
+  "NIVEAU 3",
+)}
+${lesson(
+  "Equivalence Partitioning",
+  `
+<p>Regroupe les entrées qui devraient se comporter de la même manière. Pour un champ « âge 18–65 », on peut créer les classes : inférieur à 18, 18–65, supérieur à 65, puis sélectionner des représentants.</p>`,
+  "NIVEAU 3",
+)}
+<div class="lesson">
+<h3>🧩 Générateur de test cases</h3>
+<input class="searchbox" id="featureInput" placeholder="Ex : Login, inscription, panier, reset password">
+<div class="toolbar"><button class="btn" onclick="generateCases()">Générer des exemples</button></div>
+<div id="caseOutput"></div>
+</div>
+${completeButton("testcases")}`;
+
+      /* =========================================================
+   BUG REPORTING
+========================================================= */
+      pages.bugs.innerHTML = `
+<div class="eyebrow">Module 5</div><h1>Bug Reporting</h1>
+<p class="lede">Un bon bug permet à l'équipe de reproduire, comprendre et corriger le problème.</p>
+${lesson(
+  "Structure professionnelle",
+  table(
+    ["Champ", "À mettre"],
+    [
+      ["Title", "Résumé précis et court."],
+      ["Environment", "OS, navigateur, version, build."],
+      ["Precondition", "État nécessaire avant le test."],
+      ["Steps", "Étapes reproductibles."],
+      ["Expected", "Ce qui devrait arriver."],
+      ["Actual", "Ce qui arrive réellement."],
+      ["Evidence", "Capture, vidéo, logs, request ID si utile."],
+      ["Severity", "Impact du défaut."],
+      ["Priority", "Urgence selon le processus."],
+    ],
+  ),
+)}
+${lesson(
+  "Severity vs Priority",
+  `
+<div class="diagram"><span class="node">Severity = impact</span><span class="arrow">+</span><span class="node">Priority = urgence</span></div>
+<p>Exemple : un bug de paiement qui empêche tous les utilisateurs de payer peut avoir un impact très élevé. Un défaut mineur mais bloquant pour une démo importante peut recevoir une priorité élevée selon le contexte.</p>`,
+)}
+<div class="lesson">
+<h3>🐞 Générateur de bug report</h3>
+<div class="grid">
+<input class="searchbox" id="bugTitle" placeholder="Titre">
+<input class="searchbox" id="bugEnv" placeholder="Environnement">
+<input class="searchbox" id="bugSteps" placeholder="Étapes (ex: ouvrir login → cliquer)">
+<input class="searchbox" id="bugExpected" placeholder="Résultat attendu">
+<input class="searchbox" id="bugActual" placeholder="Résultat réel">
+</div>
+<div class="toolbar"><button class="btn" onclick="generateBug()">Créer le rapport</button></div>
+<pre id="bugOutput">Le rapport apparaîtra ici.</pre>
+</div>
+${completeButton("bugs")}`;
+
+      /* =========================================================
+   WEB + DEVTOOLS
+========================================================= */
+      pages.web.innerHTML = `
+<div class="eyebrow">Module 6</div><h1>Web & DevTools</h1>
+<p class="lede">Comprendre ce qui se passe entre le navigateur, le serveur et la base.</p>
+${lesson(
+  "Architecture web simple",
+  `
+<div class="diagram"><span class="node">Browser</span><span class="arrow">→ HTTP Request →</span><span class="node">Backend/API</span><span class="arrow">→</span><span class="node">Database</span><br><span class="node">Browser</span><span class="arrow">← HTTP Response ←</span><span class="node">Backend/API</span></div>`,
+)}
+${lesson(
+  "HTTP essentiel",
+  table(
+    ["Code", "Signification générale", "Exemple QA"],
+    [
+      ["200", "Succès", "GET users réussi"],
+      ["201", "Créé", "POST user créé"],
+      ["204", "Succès sans contenu", "DELETE réussi selon API"],
+      ["301/302", "Redirection", "URL redirigée"],
+      ["400", "Requête invalide", "Champ mal formé"],
+      ["401", "Non authentifié", "Token absent/invalide"],
+      ["403", "Accès refusé", "User non autorisé"],
+      ["404", "Introuvable", "Endpoint/ressource absente"],
+      ["409", "Conflit", "Ressource déjà existante, selon API"],
+      ["422", "Données non traitables, selon convention", "Validation métier"],
+      ["500", "Erreur interne", "Exception serveur"],
+    ],
+  ),
+)}
+${lesson(
+  "DevTools : onglets utiles",
+  table(
+    ["Onglet", "À quoi il sert en QA"],
+    [
+      ["Elements", "Inspecter DOM, attributs, styles."],
+      ["Console", "Voir erreurs JS et logs."],
+      ["Network", "Voir requests, responses, headers, payload, timing."],
+      ["Application", "Cookies, storage, cache, données locales."],
+      ["Performance", "Analyser certains problèmes de performance."],
+      ["Security", "Informations TLS/certificat et sécurité du contexte."],
+    ],
+  ),
+)}
+${lesson(
+  "Network : lire une requête",
+  `
+<div class="diagram"><span class="node">URL</span><span class="arrow">→</span><span class="node">Method</span><span class="arrow">→</span><span class="node">Headers</span><span class="arrow">→</span><span class="node">Payload</span><br><span class="node">Response</span><span class="arrow">→</span><span class="node">Status</span><span class="arrow">→</span><span class="node">Body</span></div>`,
+  "NIVEAU 3",
+)}
+${completeButton("web")}`;
+
+      /* =========================================================
+   API
+========================================================= */
+      pages.api.innerHTML = `
+<div class="eyebrow">Module 7</div><h1>API Testing</h1>
+<p class="lede">Teste le backend indépendamment de l'interface quand c'est pertinent.</p>
+${lesson(
+  "API en une image",
+  `
+<div class="diagram"><span class="node">Frontend</span><span class="arrow">→ Request</span><span class="node">API</span><span class="arrow">→</span><span class="node">Backend</span><span class="arrow">→</span><span class="node">DB</span><br><span class="node">Frontend</span><span class="arrow">← Response</span><span class="node">API</span></div>`,
+)}
+${lesson(
+  "Méthodes HTTP",
+  table(
+    ["Méthode", "Usage courant"],
+    [
+      ["GET", "Lire une ressource."],
+      ["POST", "Créer / déclencher une action selon API."],
+      ["PUT", "Remplacer une ressource, selon contrat."],
+      ["PATCH", "Modifier partiellement."],
+      ["DELETE", "Supprimer une ressource."],
+    ],
+  ),
+)}
+${lesson(
+  "Exemple JSON",
+  `
+<pre>POST /api/users
+Content-Type: application/json
+
+{
+  "name": "Anwar",
+  "email": "test@example.com"
+}</pre>
+<p>En QA, vérifie notamment le code HTTP, les champs de réponse, les types, les règles métier, les messages d'erreur, l'authentification et les cas limites selon le contrat.</p>`,
+)}
+${lesson(
+  "Checklist API",
+  `
+<ul><li>Happy path</li><li>Champs obligatoires manquants</li><li>Types incorrects</li><li>Valeurs limites</li><li>Authentification</li><li>Autorisation</li><li>Ressource inexistante</li><li>Headers</li><li>Pagination/tri si présents</li><li>Temps de réponse selon exigences</li></ul>`,
+)}
+${completeButton("api")}`;
+
+      /* =========================================================
+   SQL
+========================================================= */
+      pages.sql.innerHTML = `
+<div class="eyebrow">Module 8</div><h1>SQL pour QA</h1>
+<p class="lede">Le SQL utile pour vérifier les données créées ou modifiées par l'application.</p>
+${lesson(
+  "Base relationnelle",
+  `
+<div class="diagram"><span class="node">USERS</span><span class="arrow">1 ─── *</span><span class="node">ORDERS</span></div>
+<pre>USERS
+id | name | email
+
+ORDERS
+id | user_id | total</pre>`,
+)}
+${lesson(
+  "SELECT / WHERE",
+  `
+<pre>SELECT id, name, email
+FROM users
+WHERE email = 'test@example.com';</pre>
+<p>Lis les données, cible un enregistrement et compare avec ce qui a été fait via l'UI ou l'API.</p>`,
+)}
+${lesson(
+  "JOIN",
+  `
+<pre>SELECT users.name, orders.total
+FROM users
+JOIN orders ON orders.user_id = users.id
+WHERE users.id = 10;</pre>
+<p>Le JOIN permet de vérifier une relation entre plusieurs tables.</p>`,
+  "NIVEAU 2",
+)}
+${lesson(
+  "Fonctions utiles",
+  table(
+    ["Commande", "Exemple", "Utilité QA"],
+    [
+      ["COUNT", "SELECT COUNT(*) FROM users;", "Vérifier un volume."],
+      ["GROUP BY", "GROUP BY role", "Contrôler une répartition."],
+      ["ORDER BY", "ORDER BY created_at DESC", "Vérifier le tri."],
+      ["DISTINCT", "SELECT DISTINCT role", "Trouver les valeurs uniques."],
+    ],
+  ),
+)}
+${lesson(
+  "Exercices SQL",
+  `
+<p><b>Exercice 1 :</b> trouver tous les users dont l'email finit par <code>@example.com</code>.</p>
+<p><b>Exercice 2 :</b> compter les commandes.</p>
+<p><b>Exercice 3 :</b> joindre users et orders.</p>
+<details><summary>Solutions</summary><pre>SELECT * FROM users WHERE email LIKE '%@example.com';
+SELECT COUNT(*) FROM orders;
+SELECT u.name,o.total FROM users u JOIN orders o ON o.user_id=u.id;</pre></details>`,
+)}
+${completeButton("sql")}`;
+
+      /* =========================================================
+   GIT
+========================================================= */
+      pages.git.innerHTML = `
+<div class="eyebrow">Module 9</div><h1>Git & GitHub</h1>
+<p class="lede">Versionner tes tests, collaborer et préparer l'automation pour la CI.</p>
+${lesson(
+  "Workflow",
+  `
+<div class="diagram"><span class="node">Working files</span><span class="arrow">→ git add</span><span class="node">Staging</span><span class="arrow">→ git commit</span><span class="node">Local repo</span><span class="arrow">→ git push</span><span class="node">GitHub</span></div>`,
+)}
+${lesson(
+  "Commandes",
+  `
+<pre>git clone URL
+git status
+git add .
+git commit -m "Add login tests"
+git push
+git pull
+git branch
+git switch -c feature/login-tests
+git merge feature/login-tests</pre>`,
+)}
+${lesson(
+  "Pull Request",
+  `
+<p>Une Pull Request permet de proposer des changements pour revue avant fusion. En QA, elle peut contenir des tests automatisés, modifications de fixtures, corrections de tests, etc.</p>`,
+)}
+${completeButton("git")}`;
+
+      /* =========================================================
+   PROGRAMMING
+========================================================= */
+      function renderLanguage(id, title, icon) {
+        const d = LANGS[title];
+        pages[id].innerHTML = `
+ <div class="eyebrow">Module ${id === "js" ? "10" : id === "python" ? "11" : "12"}</div>
+ <h1>${icon} ${title} pour QA</h1><p class="lede">${d.desc}</p>
+ <div class="callout">Objectif : comprendre assez le langage pour lire, écrire, corriger et maintenir des scripts de test. Tu n'as pas besoin de tout apprendre avant de commencer le QA.</div>
+ <input class="searchbox" id="${id}-search" placeholder="Rechercher un concept dans ${title}…">
+ <div id="${id}-dict" class="grid" style="margin-top:12px"></div>
+ ${completeButton(id)}`;
+        const box = document.getElementById(id + "-dict");
+        function draw(q = "") {
+          box.innerHTML = d.items
+            .filter(
+              (x) =>
+                x[0].toLowerCase().includes(q.toLowerCase()) ||
+                x[1].toLowerCase().includes(q.toLowerCase()),
+            )
+            .map(
+              (x) => `
+   <div class="card"><h3>${x[0]}</h3><p>${x[1]}</p><pre>${escapeHTML(x[2])}</pre><p class="small"><b>Usage QA :</b> ${x[3]}</p></div>`,
+            )
+            .join("");
+        }
+        draw();
+        document.getElementById(id + "-search").oninput = (e) =>
+          draw(e.target.value);
+      }
+      function escapeHTML(s) {
+        return s
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;");
+      }
+
+      /* =========================================================
+   AUTOMATION
+========================================================= */
+      pages.automation.innerHTML = `
+<div class="eyebrow">Module 13</div><h1>Automation Testing</h1>
+<p class="lede">Savoir quoi automatiser, pourquoi et comment structurer un projet.</p>
+${lesson(
+  "Manual vs Automation",
+  table(
+    ["Manuel", "Automation"],
+    [
+      ["Exécuté par une personne", "Exécuté par un script/outillage"],
+      ["Flexible pour exploration", "Excellent pour répétition"],
+      ["Utile pour UX/exploration", "Utile pour regression répétitive"],
+      ["Coût humain par exécution", "Coût initial puis exécutions répétables"],
+    ],
+  ),
+)}
+${lesson(
+  "Bon candidat à l'automation",
+  `
+<div class="diagram"><span class="node">Répétitif</span><span class="arrow">+</span><span class="node">Stable</span><span class="arrow">+</span><span class="node">Important</span><span class="arrow">→</span><span class="node">Candidat</span></div>
+<p>Un test très instable, purement visuel ou fortement exploratoire n'est pas automatiquement un bon candidat.</p>`,
+)}
+${lesson(
+  "Structure d'un projet",
+  `
+<pre>qa-project/
+├── tests/
+├── pages/
+├── fixtures/
+├── data/
+├── reports/
+├── package.json
+└── README.md</pre>`,
+)}
+${completeButton("automation")}`;
+
+      /* =========================================================
+   PLAYWRIGHT
+========================================================= */
+      pages.playwright.innerHTML = `
+<div class="eyebrow">Module 14</div><h1>Playwright</h1>
+<p class="lede">Automatiser des scénarios web avec JavaScript/TypeScript.</p>
+${lesson(
+  "Premier test",
+  `
+<pre>import { test, expect } from '@playwright/test';
+
+test('login valide', async ({ page }) => {
+  await page.goto('https://example.com/login');
+  await page.getByLabel('Email').fill('test@example.com');
+  await page.getByLabel('Password').fill('password');
+  await page.getByRole('button', {name:'Login'}).click();
+  await expect(page).toHaveURL(/dashboard/);
+});</pre>
+<p><b>goto</b> navigue, <b>getByLabel</b> cible un champ accessible, <b>fill</b> saisit, <b>getByRole</b> cible le bouton et <b>expect</b> vérifie le résultat.</p>`,
+)}
+${lesson(
+  "Locators",
+  table(
+    ["Locator", "Idée"],
+    [
+      ["getByRole", "Basé sur le rôle accessible."],
+      ["getByLabel", "Basé sur le label d'un champ."],
+      ["getByText", "Basé sur le texte."],
+      ["locator('css')", "Sélecteur CSS quand nécessaire."],
+    ],
+  ),
+)}
+${lesson(
+  "Page Object Model",
+  `
+<pre>class LoginPage {
+  constructor(page){
+    this.page = page;
+    this.email = page.getByLabel('Email');
+    this.password = page.getByLabel('Password');
+    this.login = page.getByRole('button',{name:'Login'});
+  }
+  async loginAs(email,password){
+    await this.email.fill(email);
+    await this.password.fill(password);
+    await this.login.click();
+  }
+}</pre>`,
+  "NIVEAU 3",
+)}
+${lesson(
+  "Commandes",
+  `
+<pre>npm init playwright@latest
+npx playwright test
+npx playwright test --headed
+npx playwright show-report</pre>`,
+)}
+${completeButton("playwright")}`;
+
+      /* =========================================================
+   SELENIUM
+========================================================= */
+      pages.selenium.innerHTML = `
+<div class="eyebrow">Module 15</div><h1>Selenium</h1>
+<p class="lede">Comprendre l'automatisation navigateur et les concepts historiques très présents en entreprise.</p>
+${lesson(
+  "Concept",
+  `
+<div class="diagram"><span class="node">Test code</span><span class="arrow">→</span><span class="node">WebDriver</span><span class="arrow">→</span><span class="node">Browser</span></div>`,
+)}
+${lesson(
+  "Java example",
+  `
+<pre>WebElement email = driver.findElement(By.id("email"));
+email.sendKeys("test@example.com");
+
+driver.findElement(
+  By.cssSelector("button.login")
+).click();</pre>`,
+)}
+${lesson(
+  "Locator et waits",
+  `
+<p>Comprends les localisateurs (id, CSS, XPath) et les attentes explicites/implicites selon le framework et les conventions du projet. Évite les pauses arbitraires quand une attente conditionnelle est disponible.</p>`,
+)}
+${lesson(
+  "Selenium vs Playwright",
+  table(
+    ["Aspect", "Selenium", "Playwright"],
+    [
+      ["Écosystème", "Très mature et très répandu", "Plus récent, API moderne"],
+      [
+        "Navigateurs",
+        "Large support via WebDriver",
+        "Support intégré des navigateurs ciblés",
+      ],
+      ["Architecture", "WebDriver", "Playwright driver/protocol stack"],
+      ["Choix", "Dépend du projet", "Dépend du projet"],
+    ],
+  ),
+)}
+${completeButton("selenium")}`;
+
+      /* =========================================================
+   CUCUMBER
+========================================================= */
+      pages.cucumber.innerHTML = `
+<div class="eyebrow">Module 16</div><h1>Cucumber & Gherkin</h1>
+<p class="lede">Décrire les comportements dans un langage lisible par métier et technique.</p>
+${lesson(
+  "Given / When / Then",
+  `
+<pre>Feature: Login
+
+Scenario: Login avec identifiants valides
+  Given l'utilisateur est sur la page Login
+  When il saisit des identifiants valides
+  And il clique sur Login
+  Then le Dashboard est affiché</pre>
+<div class="diagram"><span class="node">Gherkin</span><span class="arrow">→</span><span class="node">Step Definitions</span><span class="arrow">→</span><span class="node">Automation code</span><span class="arrow">→</span><span class="node">Result</span></div>`,
+)}
+${lesson("Pourquoi BDD ?", `<p>BDD aide à formuler le comportement attendu dans un format compréhensible par plusieurs rôles. La qualité du scénario dépend surtout de critères clairs et testables.</p>`)}
+${lesson("Attention", `<p>Gherkin n'est pas une langue de programmation et Cucumber ne remplace pas la compréhension du besoin. Il faut éviter les scénarios trop techniques ou trop longs.</p>`)}
+${completeButton("cucumber")}`;
+
+      /* =========================================================
+   CI/CD
+========================================================= */
+      pages.cicd.innerHTML = `
+<div class="eyebrow">Module 17</div><h1>CI/CD</h1>
+<p class="lede">Faire exécuter les tests automatiquement à chaque changement selon les règles du projet.</p>
+${lesson(
+  "Pipeline",
+  `
+<div class="diagram"><span class="node">Push</span><span class="arrow">→</span><span class="node">Checkout</span><span class="arrow">→</span><span class="node">Install</span><span class="arrow">→</span><span class="node">Build</span><span class="arrow">→</span><span class="node">Tests</span><span class="arrow">→</span><span class="node">Report</span><span class="arrow">→</span><span class="node">Deploy</span></div>`,
+)}
+${lesson(
+  "GitHub Actions exemple",
+  `
+<pre>name: qa-tests
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npx playwright install --with-deps
+      - run: npx playwright test</pre>`,
+)}
+${lesson(
+  "CI vs CD",
+  table(
+    ["Terme", "Idée"],
+    [
+      ["CI", "Intégrer et vérifier régulièrement les changements."],
+      ["Continuous Delivery", "Garder le logiciel prêt à être livré/déployé."],
+      [
+        "Continuous Deployment",
+        "Déployer automatiquement lorsque les conditions du pipeline sont satisfaites.",
+      ],
+    ],
+  ),
+)}
+${completeButton("cicd")}`;
+
+      /* =========================================================
+   AGILE
+========================================================= */
+      pages.agile.innerHTML = `
+<div class="eyebrow">Module 18</div><h1>Agile / Scrum</h1>
+<p class="lede">Le vocabulaire de travail d'une équipe produit moderne.</p>
+${lesson(
+  "Vocabulaire",
+  table(
+    ["Terme", "Définition simple"],
+    [
+      ["Product Backlog", "Liste priorisée du travail produit."],
+      ["Sprint", "Itération de durée définie."],
+      ["User Story", "Besoin exprimé du point de vue utilisateur."],
+      [
+        "Acceptance Criteria",
+        "Conditions permettant de considérer une story acceptable.",
+      ],
+      ["Daily", "Synchronisation courte de l'équipe."],
+      ["Review", "Présentation/révision du résultat du sprint."],
+      ["Retrospective", "Réflexion sur le processus et les améliorations."],
+    ],
+  ),
+)}
+${lesson(
+  "Exemple QA",
+  `
+<pre>User Story:
+En tant qu'utilisateur,
+je veux réinitialiser mon mot de passe,
+afin de récupérer mon compte.
+
+Acceptance criteria:
+- Un email valide permet de demander le reset.
+- Un lien est envoyé.
+- Le lien expiré est refusé.
+- Le nouveau mot de passe respecte les règles.</pre>
+<p>À partir de cela, le QA prépare des scénarios positifs, négatifs, limites, sécurité et régression pertinents.</p>`,
+)}
+${completeButton("agile")}`;
+
+      /* =========================================================
+   SECURITY
+========================================================= */
+      pages.security.innerHTML = `
+<div class="eyebrow">Module 19</div><h1>Security Testing — bases</h1>
+<p class="lede">Comprendre les contrôles défensifs sans apprendre à exploiter des systèmes réels.</p>
+${lesson(
+  "Authentication vs Authorization",
+  `
+<div class="diagram"><span class="node">Authentication</span><span class="arrow">→</span><span class="node">Qui es-tu ?</span><br><span class="node">Authorization</span><span class="arrow">→</span><span class="node">Qu'as-tu le droit de faire ?</span></div>`,
+)}
+${lesson(
+  "Checklist défensive",
+  table(
+    ["Zone", "Vérification"],
+    [
+      ["Login", "Credentials invalides refusés; messages adaptés."],
+      ["Session", "Expiration et déconnexion selon exigences."],
+      [
+        "Authorization",
+        "Un rôle non autorisé ne peut pas accéder aux actions protégées.",
+      ],
+      ["Input validation", "Données invalides rejetées proprement."],
+      ["HTTPS", "Transport chiffré dans les environnements concernés."],
+      ["Secrets", "Pas de secrets exposés dans frontend, logs ou dépôt."],
+    ],
+  ),
+)}
+${lesson("OWASP Top 10", `<p>Utilise l'OWASP Top 10 comme introduction aux risques web. Pour chaque risque, apprends d'abord : définition, impact, prévention, contrôles de test et comment documenter un résultat. N'effectue des tests de sécurité actifs que sur des systèmes pour lesquels tu as l'autorisation.</p>`)}
+${completeButton("security")}`;
+
+      /* =========================================================
+   TOOLS
+========================================================= */
+      pages.tools.innerHTML = `
+<div class="eyebrow">Module 20</div><h1>Outils QA</h1>
+<p class="lede">Un dictionnaire pratique des outils que tu peux rencontrer.</p>
+<div class="toolbox">${TOOLS.map((t) => `<div class="tool"><h3>${t[0]}</h3><p class="small">${t[1]}</p></div>`).join("")}</div>
+<div class="lesson"><h3>Quel outil pour quoi ?</h3>${table(
+        ["Besoin", "Outils possibles"],
+        [
+          ["Bug / backlog", "Jira"],
+          ["API", "Postman"],
+          ["Web automation", "Playwright / Selenium"],
+          ["BDD", "Cucumber"],
+          ["Versioning", "Git / GitHub"],
+          ["CI", "GitHub Actions / Jenkins"],
+          ["Performance", "JMeter"],
+          ["Environnement reproductible", "Docker"],
+          ["Inspection web", "DevTools"],
+        ],
+      )}</div>
+${completeButton("tools")}`;
+
+      /* =========================================================
+   LAB
+========================================================= */
+      pages.lab.innerHTML = `
+<div class="eyebrow">Module 21</div><h1>Practice Lab — Bug Hunter</h1>
+<p class="lede">Une mini-application volontairement imparfaite. Ton objectif est de penser comme un QA.</p>
+<div class="lab-app">
+ <h2>Shop Demo</h2>
+ <label>Email</label><input id="labEmail" placeholder="email@example.com">
+ <label>Password</label><input id="labPass" type="password" placeholder="Password">
+ <button onclick="labLogin()">Login</button>
+ <div class="status" id="labStatus">Essaie des cas valides et invalides.</div>
+ <hr>
+ <h3>Produit</h3>
+ <p>Prix affiché : 100 MAD</p>
+ <label>Quantité</label><input id="qty" value="1">
+ <button onclick="labCart()">Ajouter au panier</button>
+ <div class="status" id="cartStatus">Panier vide.</div>
+</div>
+<div class="lesson">
+<h3>Mission QA</h3>
+<ol>
+<li>Teste des champs vides.</li><li>Teste un email invalide.</li><li>Teste une quantité négative.</li>
+<li>Teste zéro et une valeur décimale.</li><li>Note au moins 3 anomalies potentielles.</li>
+</ol>
+<p>Pour chaque bug : titre → environnement → étapes → attendu → réel → severity → priority.</p>
+<button class="btn" onclick="finishLab()">J'ai terminé la mission</button>
+</div>
+${completeButton("lab")}`;
+
+      /* =========================================================
+   PROJECTS
+========================================================= */
+      pages.projects.innerHTML = `
+<div class="eyebrow">Module 22</div><h1>Projets QA réels</h1>
+<p class="lede">Transforme les cours en portfolio GitHub.</p>
+<div class="grid">
+${[
+  [
+    "Projet 1",
+    "Login & Registration",
+    "Test cases + bug reports + regression checklist.",
+  ],
+  [
+    "Projet 2",
+    "E-commerce",
+    "Search, product, cart, checkout, boundary cases.",
+  ],
+  ["Projet 3", "REST API", "Postman collection + positive/negative API tests."],
+  ["Projet 4", "Playwright", "Automation login, search, cart + HTML report."],
+  [
+    "Projet 5",
+    "QA Portfolio",
+    "GitHub repo + README + tests + bugs + CI pipeline.",
+  ],
+]
+  .map(
+    (p) =>
+      `<div class="card"><h3>${p[0]}</h3><b>${p[1]}</b><p class="small">${p[2]}</p><span class="tag">Portfolio</span></div>`,
+  )
+  .join("")}
+</div>
+<div class="lesson">
+<h3>Structure GitHub recommandée</h3>
+<pre>qa-portfolio/
+├── README.md
+├── manual-testing/
+│   ├── test-cases.xlsx
+│   └── bug-reports.md
+├── api-testing/
+│   └── postman-collection.json
+├── automation/
+│   ├── tests/
+│   ├── pages/
+│   └── playwright.config.js
+└── .github/workflows/tests.yml</pre>
+</div>
+<div class="callout">Ton portfolio doit montrer ce que tu sais faire : pas seulement une liste de technologies.</div>
+<button class="btn" onclick="state.projectDone=true;state.done.projects=true;recalcXP();renderHome();this.textContent='✓ Projet portfolio validé'">Valider le plan de portfolio</button>`;
+
+      /* =========================================================
+   INTERVIEW
+========================================================= */
+      pages.interview.innerHTML = `
+<div class="eyebrow">Module 23</div><h1>Préparation entretien QA</h1>
+<p class="lede">Apprends à expliquer simplement puis professionnellement.</p>
+<div class="lesson">
+${INTERVIEW.map((x, i) => `<details style="border-bottom:1px solid var(--border);padding:10px 0"><summary><b>${i + 1}. ${x[0]}</b></summary><p>${x[1]}</p></details>`).join("")}
+</div>
+${lesson(
+  "Questions pratiques à préparer",
+  `
+<ul><li>Écris 10 test cases pour un login.</li><li>Donne 5 cas négatifs pour une API POST.</li><li>Explique un bug avec severity et priority.</li><li>Écris un SELECT avec WHERE et un JOIN.</li><li>Explique ton dernier projet GitHub.</li><li>Écris un test Playwright simple.</li><li>Explique Smoke, Sanity, Regression et Retesting.</li></ul>`,
+)}
+${completeButton("interview")}`;
+
+      /* =========================================================
+   CHEAT SHEETS
+========================================================= */
+      pages.cheatsheets.innerHTML = `
+<div class="eyebrow">Module 24</div><h1>Cheat Sheets</h1>
+<p class="lede">Révisions rapides avant un exercice ou un entretien.</p>
+<div class="grid">
+<div class="card"><h3>HTTP</h3><pre>200 OK
+201 Created
+204 No Content
+400 Bad Request
+401 Unauthorized
+403 Forbidden
+404 Not Found
+409 Conflict
+422 Unprocessable Content
+500 Internal Server Error</pre></div>
+<div class="card"><h3>Git</h3><pre>git status
+git add .
+git commit -m "message"
+git pull
+git push
+git switch -c feature/name
+git merge branch</pre></div>
+<div class="card"><h3>SQL</h3><pre>SELECT ...
+FROM ...
+WHERE ...
+JOIN ... ON ...
+GROUP BY ...
+ORDER BY ...
+COUNT(*)</pre></div>
+<div class="card"><h3>Testing</h3><pre>Smoke = build testable
+Sanity = ciblé
+Retest = correction
+Regression = pas d'effet secondaire
+UAT = acceptation métier</pre></div>
+<div class="card"><h3>Playwright</h3><pre>page.goto()
+getByRole()
+getByLabel()
+fill()
+click()
+expect()
+toHaveURL()</pre></div>
+<div class="card"><h3>Bug</h3><pre>Title
+Environment
+Precondition
+Steps
+Expected
+Actual
+Evidence
+Severity
+Priority</pre></div>
+</div>
+${completeButton("cheatsheets")}`;
+
+      /* =========================================================
+   GLOSSARY
+========================================================= */
+      pages.glossary.innerHTML = `
+<div class="eyebrow">Module 25</div><h1>Dictionnaire A-Z</h1>
+<p class="lede">${GLOSSARY.length} termes QA et techniques, avec définition et usage.</p>
+<input class="searchbox" id="glossSearch" placeholder="Rechercher un terme…">
+<div class="letterbar">${"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+        .split("")
+        .map((l) => `<button onclick="filterGlossary('${l}')">${l}</button>`)
+        .join("")}<button onclick="filterGlossary('')">Tous</button></div>
+<div id="glossList" class="grid"></div>`;
+      function renderGloss(q = "", letter = "") {
+        const list = document.getElementById("glossList");
+        if (!list) return;
+        list.innerHTML =
+          GLOSSARY.filter((g) => {
+            const hit =
+              !q ||
+              g[0].toLowerCase().includes(q.toLowerCase()) ||
+              g[1].toLowerCase().includes(q.toLowerCase());
+            const letHit = !letter || g[0][0].toUpperCase() === letter;
+            return hit && letHit;
+          })
+            .map(
+              (g) =>
+                `<div class="card"><h3>${g[0]}</h3><p>${g[1]}</p><p class="small"><b>Usage QA :</b> ${g[2]}</p></div>`,
+            )
+            .join("") || `<div class="card">Aucun terme.</div>`;
+      }
+      window.filterGlossary = (l) =>
+        renderGloss(document.getElementById("glossSearch").value, l);
+      document.getElementById("glossSearch").oninput = (e) =>
+        renderGloss(e.target.value);
+      renderGloss();
+
+      /* =========================================================
+   QUIZ
+========================================================= */
+      pages.quiz.innerHTML = `
+<div class="eyebrow">Module 26</div><h1>Quiz général</h1>
+<p class="lede">15 questions. Chaque réponse donne une explication.</p>
+<div class="lesson" id="quizBox"></div>`;
+      function renderQuiz() {
+        const box = document.getElementById("quizBox");
+        box.innerHTML = `<div class="small">Questions répondues : ${Object.keys(state.quiz).length}/${QUIZ.length}</div>`;
+        QUIZ.forEach((q, i) => {
+          const d = document.createElement("div");
+          d.className = "quizq";
+          d.innerHTML = `<p><b>${i + 1}. ${q[0]}</b></p>`;
+          q[1].forEach((opt, j) => {
+            const b = document.createElement("button");
+            b.className = "option";
+            b.textContent = opt;
+            if (state.quiz[i] !== undefined) {
+              if (j === q[2]) b.classList.add("correct");
+              if (j === state.quiz[i] && j !== q[2]) b.classList.add("wrong");
+            }
+            b.onclick = () => {
+              if (state.quiz[i] !== undefined) return;
+              state.quiz[i] = j;
+              recalcXP();
+              renderQuiz();
+            };
+            d.appendChild(b);
+          });
+          if (state.quiz[i] !== undefined)
+            d.insertAdjacentHTML(
+              "beforeend",
+              `<div class="answer">💡 ${q[3]}</div>`,
+            );
+          box.appendChild(d);
+        });
+        if (Object.keys(state.quiz).length === QUIZ.length) {
+          const score = QUIZ.reduce(
+            (n, q, i) => n + (state.quiz[i] === q[2] ? 1 : 0),
+            0,
+          );
+          box.insertAdjacentHTML(
+            "afterbegin",
+            `<div class="callout"><b>Score : ${score}/${QUIZ.length}</b> — Relis les explications des réponses avant de passer aux projets.</div>`,
+          );
+        }
+      }
+      renderQuiz();
+
+      /* =========================================================
+   SEARCH
+========================================================= */
+      const search = document.getElementById("globalSearch");
+      const results = document.getElementById("results");
+      function searchAll(q) {
+        q = q.toLowerCase().trim();
+        const out = [];
+        MODULES.forEach((m) => {
+          if ((m.title + " " + m.id).toLowerCase().includes(q))
+            out.push({ label: m.icon + " " + m.title, id: m.id });
+        });
+        GLOSSARY.forEach((g) => {
+          if (g.join(" ").toLowerCase().includes(q))
+            out.push({ label: "📖 " + g[0], id: "glossary" });
+        });
+        Object.keys(LANGS).forEach((l) => {
+          if (l.toLowerCase().includes(q))
+            out.push({
+              label: "💻 Dictionnaire " + l,
+              id:
+                l === "JavaScript"
+                  ? "js"
+                  : l === "Python"
+                    ? "python"
+                    : l === "Java"
+                      ? "java"
+                      : "glossary",
+            });
+        });
+        TOOLS.forEach((t) => {
+          if (t.join(" ").toLowerCase().includes(q))
+            out.push({ label: "🧰 " + t[0], id: "tools" });
+        });
+        return [
+          ...new Map(out.map((x) => [x.id + "-" + x.label, x])).values(),
+        ].slice(0, 12);
+      }
+      search.oninput = () => {
+        const q = search.value.trim();
+        if (!q) {
+          results.style.display = "none";
+          return;
+        }
+        const hits = searchAll(q);
+        results.innerHTML = hits.length
+          ? hits
+              .map((h) => `<button data-go="${h.id}">${h.label}</button>`)
+              .join("")
+          : `<div style="padding:12px;color:var(--muted)">Aucun résultat</div>`;
+        results.style.display = "block";
+        results.querySelectorAll("[data-go]").forEach(
+          (b) =>
+            (b.onclick = () => {
+              go(b.dataset.go);
+              results.style.display = "none";
+              search.value = "";
+            }),
+        );
+      };
+      document.addEventListener("click", (e) => {
+        if (!e.target.closest(".search")) results.style.display = "none";
+      });
+
+      /* =========================================================
+   GENERATORS
+========================================================= */
+      window.generateCases = () => {
+        const f =
+          document.getElementById("featureInput").value.trim() || "Login";
+        const rows = [
+          [
+            "TC-" + f.toUpperCase().replace(/\s+/g, "-") + "-001",
+            f + " avec données valides",
+            "Données valides",
+            "Fonctionnement normal attendu",
+            "PASS/FAIL",
+          ],
+          [
+            "TC-" + f.toUpperCase().replace(/\s+/g, "-") + "-002",
+            f + " avec données invalides",
+            "Données invalides",
+            "Message/erreur attendu",
+            "PASS/FAIL",
+          ],
+          [
+            "TC-" + f.toUpperCase().replace(/\s+/g, "-") + "-003",
+            f + " avec champs vides",
+            "Aucun input",
+            "Validation attendue",
+            "PASS/FAIL",
+          ],
+          [
+            "TC-" + f.toUpperCase().replace(/\s+/g, "-") + "-004",
+            f + " avec valeur limite",
+            "Valeur boundary",
+            "Comportement conforme aux règles",
+            "PASS/FAIL",
+          ],
+        ];
+        document.getElementById("caseOutput").innerHTML = table(
+          ["ID", "Test", "Précondition", "Attendu", "Statut"],
+          rows,
+        );
+      };
+      window.generateBug = () => {
+        const v = (id) =>
+          document.getElementById(id).value.trim() || "(non renseigné)";
+        document.getElementById("bugOutput").textContent = `BUG REPORT
+==========
+Title: ${v("bugTitle")}
+Environment: ${v("bugEnv")}
+
+Steps:
+${v("bugSteps")}
+
+Expected:
+${v("bugExpected")}
+
+Actual:
+${v("bugActual")}
+
+Severity: À déterminer selon l'impact
+Priority: À déterminer selon l'urgence métier
+Evidence: À joindre si utile`;
+      };
+
+      /* =========================================================
+   LAB
+========================================================= */
+      window.labLogin = () => {
+        const email = document.getElementById("labEmail").value.trim();
+        const pass = document.getElementById("labPass").value;
+        const s = document.getElementById("labStatus");
+        if (email && pass) s.textContent = "Connexion réussie (démo).";
+        else if (email && !pass)
+          s.textContent =
+            "Démo : aucun message de validation précis → candidat potentiel à analyser.";
+        else s.textContent = "Démo : champs incomplets.";
+      };
+      window.labCart = () => {
+        const q = Number(document.getElementById("qty").value);
+        const s = document.getElementById("cartStatus");
+        if (q > 0) s.textContent = "Produit ajouté : " + q + " × 100 MAD.";
+        else
+          s.textContent =
+            "Démo : quantité non valide mais aucune validation métier claire → cherche le bug.";
+      };
+      window.finishLab = () => {
+        state.labDone = true;
+        state.done.lab = true;
+        recalcXP();
+        alert(
+          "Mission enregistrée ! Maintenant rédige les bug reports dans le module 5.",
+        );
+      };
+
+      /* =========================================================
+   THEME + INIT + ERROR SAFETY
+========================================================= */
+      const themeBtn = document.getElementById("theme");
+      function applyTheme(t) {
+        if (t === "light") {
+          document.documentElement.style.setProperty("--bg", "#f6f8fc");
+          document.documentElement.style.setProperty("--bg2", "#ffffff");
+          document.documentElement.style.setProperty("--panel", "#ffffff");
+          document.documentElement.style.setProperty("--panel2", "#f1f5f9");
+          document.documentElement.style.setProperty("--border", "#dce3ed");
+          document.documentElement.style.setProperty("--text", "#152033");
+          document.documentElement.style.setProperty("--muted", "#5b687b");
+          document.documentElement.style.setProperty("--code", "#eef2f7");
+          themeBtn.textContent = "🌙 Sombre";
+        } else {
+          [
+            "--bg",
+            "--bg2",
+            "--panel",
+            "--panel2",
+            "--border",
+            "--text",
+            "--muted",
+            "--code",
+          ].forEach((x, i) => {
+            const vals = [
+              "#08111f",
+              "#0d1728",
+              "#111e31",
+              "#16243a",
+              "#263751",
+              "#e9f0fa",
+              "#9aaac0",
+              "#07101c",
+            ];
+            document.documentElement.style.setProperty(x, vals[i]);
+          });
+          themeBtn.textContent = "☀️ Clair";
+        }
+        state.theme = t;
+        save();
+      }
+      themeBtn.onclick = () =>
+        applyTheme(state.theme === "dark" ? "light" : "dark");
+
+      window.addEventListener("error", (e) => {
+        console.error(e.error || e.message);
+      });
+
+      renderHome();
+      renderRoadmap();
+      renderQuiz();
+      recalcXP();
+      go("home");
+    </script>
+  </body>
+</html>
